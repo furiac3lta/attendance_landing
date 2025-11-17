@@ -1,0 +1,10 @@
+body.dark {
+  color-scheme: dark;
+}
+
+img {
+  transition: transform .25s ease;
+}
+img:hover {
+  transform: translateY(-4px);
+}

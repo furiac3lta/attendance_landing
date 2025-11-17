@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance App – Gestión de Asistencias</title>
+<link rel="shortcut icon" href="./src/img/fondo.png" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind config -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['SF Pro Display', 'Poppins', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            accent: '#ff7ebf',
+            accent2: '#a975ff',
+            soft: '#f5f5f7',
+          },
+          boxShadow: {
+            soft: '0 18px 45px rgba(0,0,0,0.08)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- AOS Animations -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+</head>
+
+<body class="font-sans bg-soft text-slate-900 antialiased transition-colors duration-300
+             dark:bg-[#050509] dark:text-slate-100">
+
+  <!-- BG gradient suave -->
+  <div class="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-white via-soft to-white
+              dark:from-[#050509] dark:via-[#0b0b12] dark:to-[#050509]"></div>
+
+  <!-- NAVBAR -->
+  <header
+    class="fixed top-0 inset-x-0 z-40 border-b border-slate-200/60 bg-white/80 backdrop-blur-xl
+           dark:bg-black/40 dark:border-slate-800/80">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
+
+      <!-- Logo -->
+      <a href="#top" class="flex items-center gap-2">
+        <div class="flex h-9 w-9 items-center justify-center rounded-2xl
+                    bg-gradient-to-br from-accent to-accent2 shadow-soft">
+         <img src="./src/img/fondo.png" alt="logo"
+                  class="h-full w-full object-cover" />
+
+        </div>
+        <div class="leading-tight">
+          <p class="font-display text-lg font-semibold tracking-tight">
+            Attendance <span class="text-accent2">App</span>
+          </p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400">
+            Control inteligente de asistencias
+          </p>
+        </div>
+      </a>
+
+      <!-- Desktop nav -->
+      <nav class="hidden items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300 md:flex">
+        <a href="#features" class="hover:text-accent transition-colors">Características</a>
+        <a href="#workflow" class="hover:text-accent transition-colors">Cómo funciona</a>
+        <a href="#demo" class="hover:text-accent transition-colors">Demo</a>
+        <a href="#contacto" class="hover:text-accent transition-colors">Contacto</a>
+      </nav>
+
+      <!-- Right actions -->
+      <div class="flex items-center gap-3">
+        <!-- Modo oscuro -->
+        <button id="themeToggle"
+          class="hidden rounded-full border border-slate-200 bg-white/70 p-2 text-slate-700 shadow-sm
+                 hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-black/60
+                 dark:text-slate-200 dark:hover:border-slate-500 md:inline-flex">
+          <i data-lucide="moon-star" class="h-4 w-4"></i>
+        </button>
+
+        <!-- CTA mini -->
+        <a href="https://attendance-frontend-v2-production.up.railway.app/login"
+          class="hidden rounded-full bg-slate-900 px-4 py-2 text-xs font-semibold text-white
+                 shadow-soft hover:bg-slate-800
+                 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 md:inline-flex">
+          Ingresar a la app
+        </a>
+
+        <!-- Mobile menu button -->
+        <button id="menuToggle"
+          class="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/80 p-2
+                 text-slate-700 shadow-sm hover:border-slate-300 hover:bg-white
+                 dark:border-slate-700 dark:bg-black/70 dark:text-slate-100 md:hidden">
+          <i data-lucide="menu" class="h-5 w-5"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile nav -->
+    <nav id="mobileNav"
+      class="mx-auto hidden max-w-6xl flex-col gap-3 border-t border-slate-200/60 px-5 pb-4 pt-3 text-sm
+             text-slate-700 dark:border-slate-800/80 dark:text-slate-200 md:hidden">
+      <a href="#features" class="py-1">Características</a>
+      <a href="#workflow" class="py-1">Cómo funciona</a>
+      <a href="#demo" class="py-1">Demo</a>
+      <a href="#contacto" class="py-1">Contacto</a>
+      <div class="mt-3 flex items-center justify-between">
+        <button id="themeToggleMobile"
+          class="flex items-center gap-2 rounded-full border border-slate-200 bg-white/90 px-3 py-1.5 text-xs
+                 dark:border-slate-700 dark:bg-black/60">
+          <i data-lucide="moon-star" class="h-4 w-4"></i>
+          <span>Modo oscuro</span>
+        </button>
+        <a href="https://attendance-frontend-v2-production.up.railway.app/login"
+          class="rounded-full bg-slate-900 px-4 py-1.5 text-xs font-semibold text-white
+                 dark:bg-white dark:text-slate-900">
+          Ingresar
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top" class="mx-auto mt-24 max-w-6xl px-5">
+
+    <!-- HERO ===================================================== -->
+    <section class="flex flex-col items-center gap-10 py-12 md:flex-row md:gap-14" data-aos="fade-up">
+      <!-- Texto -->
+      <div class="flex-1">
+        <p class="mb-3 inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-medium
+                  text-slate-600 shadow-sm ring-1 ring-slate-200
+                  dark:bg-black/40 dark:text-slate-300 dark:ring-slate-700">
+          <span class="flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-[10px] text-white
+                       dark:bg-white dark:text-slate-900">
+            ●
+          </span>
+          Nueva versión 2025 • Optimizada para academias y dojos
+        </p>
+
+        <h1 class="font-display text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+          Gestioná asistencias
+          <span class="block bg-gradient-to-r from-slate-900 via-accent2 to-accent bg-clip-text text-transparent
+                       dark:from-white dark:via-accent2 dark:to-accent">
+            con la misma simpleza que pasás lista.
+          </span>
+        </h1>
+
+        <p class="mt-5 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          Attendance App centraliza tus cursos, clases, alumnos y reportes en un solo lugar.
+          Diseñada para academias de BJJ, gimnasios, escuelas y talleres que necesitan
+          orden sin complicarse.
+        </p>
+
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <a href="https://attendance-frontend-v2-production.up.railway.app/login"
+            class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold
+                   text-white shadow-soft transition-transform hover:-translate-y-0.5 hover:bg-slate-800
+                   dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
+            <i data-lucide="log-in" class="h-4 w-4"></i>
+            Probar ahora
+          </a>
+
+          <a href="#demo"
+            class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900
+                   dark:text-slate-300 dark:hover:text-white">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-300
+                           bg-white text-[11px] shadow-sm
+                           dark:border-slate-700 dark:bg-black/60">
+              ▶
+            </span>
+            Ver pantallas de ejemplo
+          </a>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+          <div class="flex items-center gap-2">
+            <i data-lucide="shield-check" class="h-4 w-4"></i>
+            <span>Accesos por rol: SuperAdmin, Admin, Instructor, Usuario</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="check-circle-2" class="h-4 w-4"></i>
+            <span>Funciona en notebook, tablet y celular</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mockup -->
+     <!-- Mockup real con imagen -->
+<div class="flex-1 flex justify-center" data-aos="fade-left">
+
+  <div class="relative w-[320px] md:w-[380px] rounded-[32px] p-5
+              bg-[#0d0c13] shadow-[0_0_80px_20px_rgba(142,63,255,0.25)]
+              border border-white/10 dark:border-white/10">
+
+    <!-- Glow exterior suave -->
+    <div class="absolute inset-0 rounded-[32px] -z-10 blur-2xl
+                bg-gradient-to-br from-accent2/20 to-accent/10"></div>
+
+    <!-- Imagen -->
+    <img
+      src="./src/img/img1.png"
+      alt="Vista previa de Attendance App"
+      class="rounded-2xl w-full shadow-2xl" />
+
+  </div>
+
+</div>
+
+    </section>
+
+    <!-- FEATURES ================================================= -->
+    <section id="features" class="py-12 md:py-16">
+      <h2 class="mb-10 text-center font-display text-3xl font-semibold tracking-tight md:text-4xl"
+          data-aos="fade-up">
+        Pensada para el día a día de tu academia
+      </h2>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <!-- Feature -->
+        <article class="group rounded-3xl bg-white/80 p-6 shadow-soft ring-1 ring-slate-200/70
+                        transition hover:-translate-y-1 hover:ring-accent/30
+                        dark:bg-black/40 dark:ring-slate-800"
+                 data-aos="fade-up">
+          <div
+            class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-white
+                   shadow-sm dark:bg-white dark:text-slate-900">
+            <i data-lucide="clipboard-check" class="h-4 w-4"></i>
+          </div>
+          <h3 class="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+            Tomá asistencia en segundos
+          </h3>
+          <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+            Marcar presentes, ausentes y llegadas tarde es tan simple como tocar un botón
+            desde el celular, tablet o notebook.
+          </p>
+        </article>
+
+        <article class="group rounded-3xl bg-white/80 p-6 shadow-soft ring-1 ring-slate-200/70
+                        transition hover:-translate-y-1 hover:ring-accent/30
+                        dark:bg-black/40 dark:ring-slate-800"
+                 data-aos="fade-up" data-aos-delay="80">
+          <div
+            class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-white
+                   shadow-sm dark:bg-white dark:text-slate-900">
+            <i data-lucide="layers" class="h-4 w-4"></i>
+          </div>
+          <h3 class="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+            Cursos, clases y organizaciones
+          </h3>
+          <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+            Soporta múltiples academias, sedes, cursos y grupos de alumnos. Ideal para
+            redes de dojos o gimnasios con varias sucursales.
+          </p>
+        </article>
+
+        <article class="group rounded-3xl bg-white/80 p-6 shadow-soft ring-1 ring-slate-200/70
+                        transition hover:-translate-y-1 hover:ring-accent/30
+                        dark:bg-black/40 dark:ring-slate-800"
+                 data-aos="fade-up" data-aos-delay="140">
+          <div
+            class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-white
+                   shadow-sm dark:bg-white dark:text-slate-900">
+            <i data-lucide="shield" class="h-4 w-4"></i>
+          </div>
+          <h3 class="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+            Roles y permisos claros
+          </h3>
+          <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+            SuperAdmin, Admin, Instructor y Usuario. Cada uno ve sólo lo que necesita,
+            manteniendo la información segura.
+          </p>
+        </article>
+
+        <article class="group rounded-3xl bg-white/80 p-6 shadow-soft ring-1 ring-slate-200/70
+                        transition hover:-translate-y-1 hover:ring-accent/30
+                        dark:bg-black/40 dark:ring-slate-800"
+                 data-aos="fade-up" data-aos-delay="200">
+          <div
+            class="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-900 text-white
+                   shadow-sm dark:bg-white dark:text-slate-900">
+            <i data-lucide="bar-chart-3" class="h-4 w-4"></i>
+          </div>
+          <h3 class="mb-1 text-sm font-semibold text-slate-900 dark:text-white">
+            Reportes y control
+          </h3>
+          <p class="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
+            Consultá rápidamente quién asiste, quién falta y cómo evoluciona la asistencia
+            por curso o por alumno.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- WORKFLOW =============================================== -->
+    <section id="workflow" class="py-12 md:py-16">
+      <div class="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-center">
+        <div data-aos="fade-right">
+          <h2 class="font-display text-3xl font-semibold tracking-tight md:text-4xl">
+            De cero a pasar asistencia en <span class="text-accent2">3 pasos</span>
+          </h2>
+          <p class="mt-4 text-sm text-slate-600 dark:text-slate-300">
+            La curva de aprendizaje es mínima. Está pensada para que cualquier instructor pueda
+            usarla desde el primer día, sin tutoriales eternos.
+          </p>
+
+          <ol class="mt-6 space-y-4 text-sm">
+            <li class="flex gap-3">
+              <span
+                class="mt-1 flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-xs
+                       font-semibold text-white dark:bg-white dark:text-slate-900">
+                1
+              </span>
+              <div>
+                <p class="font-semibold text-slate-900 dark:text-white">Creás tu organización y cursos</p>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Como SuperAdmin cargás tus academias / sedes y das de alta los cursos:
+                  BJJ Infantil, Adultos, TKD, Fitness, etc.
+                </p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <span
+                class="mt-1 flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-xs
+                       font-semibold text-white dark:bg-white dark:text-slate-900">
+                2
+              </span>
+              <div>
+                <p class="font-semibold text-slate-900 dark:text-white">Asignás admins e instructores</p>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  Cada admin gestiona su organización y puede invitar instructores para que
+                  manejen sus propios cursos y clases.
+                </p>
+              </div>
+            </li>
+            <li class="flex gap-3">
+              <span
+                class="mt-1 flex h-7 w-7 items-center justify-center rounded-full bg-slate-900 text-xs
+                       font-semibold text-white dark:bg-white dark:text-slate-900">
+                3
+              </span>
+              <div>
+                <p class="font-semibold text-slate-900 dark:text-white">Tomás asistencia en cada clase</p>
+                <p class="text-xs text-slate-600 dark:text-slate-300">
+                  En el horario de la clase el instructor abre el curso, marca presentes y ausentes,
+                  y la app guarda todo el historial automáticamente.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Mini cards roles -->
+        <div class="space-y-3" data-aos="fade-left">
+          <div
+            class="rounded-3xl bg-white/80 p-4 shadow-soft ring-1 ring-slate-200
+                   dark:bg-black/40 dark:ring-slate-800">
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Rol</p>
+            <p class="text-sm font-semibold text-slate-900 dark:text-white">SuperAdmin</p>
+            <p class="mt-1 text-xs text-slate-600 dark:text-slate-300">
+              Crea organizaciones, cursos y usuarios. Ve toda la información.
+            </p>
+          </div>
+          <div
+            class="rounded-3xl bg-white/80 p-4 shadow-soft ring-1 ring-slate-200
+                   dark:bg-black/40 dark:ring-slate-800">
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Rol</p>
+            <p class="text-sm font-semibold text-slate-900 dark:text-white">Admin</p>
+            <p class="mt-1 text-xs text-slate-600 dark:text-slate-300">
+              Administra su propia organización, cursos, alumnos e instructores.
+            </p>
+          </div>
+          <div
+            class="rounded-3xl bg-white/80 p-4 shadow-soft ring-1 ring-slate-200
+                   dark:bg-black/40 dark:ring-slate-800">
+            <p class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Rol</p>
+            <p class="text-sm font-semibold text-slate-900 dark:text-white">Instructor</p>
+            <p class="mt-1 text-xs text-slate-600 dark:text-slate-300">
+              Toma asistencia de sus clases y consulta el historial de sus grupos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO / PREVIEW ========================================== -->
+    <section id="demo" class="py-12 md:py-16">
+      <h2 class="mb-8 text-center font-display text-3xl font-semibold tracking-tight md:text-4xl"
+          data-aos="fade-up">
+        Vista previa de la app
+      </h2>
+      <p class="mx-auto max-w-xl text-center text-xs text-slate-600 dark:text-slate-300" data-aos="fade-up">
+        Estas son capturas de ejemplo. En la app real vas a poder loguearte, crear usuarios, cursos,
+        clases y tomar asistencia en vivo.
+      </p>
+
+      <div class="mt-8 flex flex-wrap justify-center gap-6" data-aos="fade-up" data-aos-delay="80">
+        <img class="w-80 rounded-3xl border border-slate-200/70 bg-white/70 object-cover shadow-soft
+                    dark:border-slate-800 dark:bg-black/40"
+             src="./src/img/img2.png"
+             alt="Dashboard de cursos" />
+        <img class="w-80 rounded-3xl border border-slate-200/70 bg-white/70 object-cover shadow-soft
+                    dark:border-slate-800 dark:bg-black/40"
+             src="/src/img/img3.png"
+             alt="Pantalla de asistencia" />
+        <img class="w-80 rounded-3xl border border-slate-200/70 bg-white/70 object-cover shadow-soft
+                    dark:border-slate-800 dark:bg-black/40"
+             src="./src/img/img4.png"
+             alt="Reporte de alumnos" />
+              <img class="w-80 rounded-3xl border border-slate-200/70 bg-white/70 object-cover shadow-soft
+                    dark:border-slate-800 dark:bg-black/40"
+             src="./src/img/img5.png"
+             alt="Dashboard de cursos" />
+        <img class="w-80 rounded-3xl border border-slate-200/70 bg-white/70 object-cover shadow-soft
+                    dark:border-slate-800 dark:bg-black/40"
+             src="/src/img/img6.png"
+             alt="Pantalla de asistencia" />
+        <img class="w-80 rounded-3xl border border-slate-200/70 bg-white/70 object-cover shadow-soft
+                    dark:border-slate-800 dark:bg-black/40"
+             src="./src/img/img7.png"
+             alt="Reporte de alumnos" />
+      </div>
+
+      <div class="mt-10 text-center" data-aos="fade-up" data-aos-delay="150">
+        <a href="https://attendance-frontend-v2-production.up.railway.app/login"
+          class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-7 py-3 text-sm font-semibold
+                 text-white shadow-soft hover:-translate-y-0.5 hover:bg-slate-800 transition-transform
+                 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
+          <i data-lucide="external-link" class="h-4 w-4"></i>
+          Ingresar a la app y probar
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ SIMPLE ============================================== -->
+    <section class="py-10 md:py-14 border-t border-slate-200/70 dark:border-slate-800">
+      <div class="grid gap-10 md:grid-cols-2 md:items-start">
+        <div data-aos="fade-right">
+          <h2 class="font-display text-2xl font-semibold tracking-tight md:text-3xl">
+            Preguntas rápidas
+          </h2>
+          <p class="mt-3 text-xs text-slate-600 dark:text-slate-300">
+            Esta landing está pensada para que puedas compartirla a dueños de academias, gimnasios o
+            escuelas y entiendan en segundos qué hace el sistema.
+          </p>
+        </div>
+
+        <div class="space-y-4 text-xs" data-aos="fade-left">
+          <details class="group rounded-2xl bg-white/80 p-4 shadow-soft ring-1 ring-slate-200
+                          dark:bg-black/40 dark:ring-slate-800">
+            <summary class="flex cursor-pointer items-center justify-between text-slate-900 dark:text-white">
+              <span>¿Necesito instalar algo?</span>
+              <span class="ml-2 text-slate-400 group-open:rotate-90 transition-transform">
+                ▸
+              </span>
+            </summary>
+            <p class="mt-2 text-slate-600 dark:text-slate-300">
+              No. Attendance App es 100% web. Solo necesitás un navegador actualizado
+              en tu PC, tablet o teléfono.
+            </p>
+          </details>
+
+          <details class="group rounded-2xl bg-white/80 p-4 shadow-soft ring-1 ring-slate-200
+                          dark:bg-black/40 dark:ring-slate-800">
+            <summary class="flex cursor-pointer items-center justify-between text-slate-900 dark:text-white">
+              <span>¿Puedo usarla con varias sedes?</span>
+              <span class="ml-2 text-slate-400 group-open:rotate-90 transition-transform">
+                ▸
+              </span>
+            </summary>
+            <p class="mt-2 text-slate-600 dark:text-slate-300">
+              Sí. Podés crear varias organizaciones y asignar un Admin distinto a cada una.
+            </p>
+          </details>
+
+          <details class="group rounded-2xl bg-white/80 p-4 shadow-soft ring-1 ring-slate-200
+                          dark:bg-black/40 dark:ring-slate-800">
+            <summary class="flex cursor-pointer items-center justify-between text-slate-900 dark:text-white">
+              <span>¿Quién puede ver los reportes?</span>
+              <span class="ml-2 text-slate-400 group-open:rotate-90 transition-transform">
+                ▸
+              </span>
+            </summary>
+            <p class="mt-2 text-slate-600 dark:text-slate-300">
+              SuperAdmin y Admin ven la foto completa. Los instructores solo las clases que dictan.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER ==================================================== -->
+  <footer id="contacto"
+  class="border-t border-slate-200/70 bg-white/80 py-6 text-center text-xs text-slate-500
+         dark:border-slate-800 dark:bg-black/40 dark:text-slate-400">
+  
+  <p>© 2025 Attendance App — by MarceDev</p>
+
+  <p class="mt-1">
+    Instagram:
+    <span class="font-medium text-slate-700 dark:text-slate-200">@marcelocolum</span>
+    —
+    WhatsApp:
+    <span class="font-medium text-slate-700 dark:text-slate-200">3743 568193</span>
+  </p>
+
+  <!-- Ícono WhatsApp ELEGANTE -->
+  <a href="https://wa.me/5493743568193?text=Hola%20Marce%2C%20quiero%20consultar"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="flex items-center gap-2 justify-center mt-2 hover:opacity-80 transition mx-auto w-fit">
+
+  <img src="./src/img/whatsapp.png"
+       alt="WhatsApp"
+       class="w-6 h-6 object-contain" />
+
+  <span class="text-sm text-gray-300">WhatsApp</span>
+</a>
+
+
+</footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    // Init AOS
+    AOS.init({
+      once: true,
+      duration: 600,
+      easing: 'ease-out-quint',
+    });
+
+    // Lucide icons
+    lucide.createIcons();
+
+    // THEME TOGGLE (light/dark) - guarda en localStorage
+    const html = document.documentElement;
+    const storedTheme = localStorage.getItem('attendance-theme');
+
+    if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+    }
+
+    function toggleTheme() {
+      html.classList.toggle('dark');
+      localStorage.setItem('attendance-theme', html.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+    document.getElementById('themeToggleMobile')?.addEventListener('click', toggleTheme);
+
+    // MOBILE MENU
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
+    if (menuToggle && mobileNav) {
+      menuToggle.addEventListener('click', () => {
+        mobileNav.classList.toggle('hidden');
+      });
+
+      // Cerrar menú al clickear un link
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => mobileNav.classList.add('hidden'));
+      });
+    }
+  </script>
+</body>
+</html>
