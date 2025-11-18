@@ -1,7 +1,12 @@
 html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+* {
+  overscroll-behavior-x: none;
+  box-sizing: border-box;
 }
 
 body.dark {
