@@ -43,9 +43,10 @@
 
 <body class="font-sans bg-soft text-slate-900 antialiased dark:bg-[#050509] dark:text-slate-100">
 
-  <!-- BG -->
+  <!-- Fondo -->
   <div class="fixed inset-0 -z-10 pointer-events-none bg-gradient-to-b from-white via-soft to-white
               dark:from-[#050509] dark:via-[#0b0b12] dark:to-[#050509]"></div>
+
 
   <!-- ==================== NAVBAR ==================== -->
   <header
@@ -61,6 +62,7 @@
                     bg-gradient-to-br from-accent to-accent2 shadow-soft overflow-hidden">
           <img src="./src/img/fondo.png" alt="logo" class="h-full w-full object-cover" />
         </div>
+
         <div class="leading-tight">
           <p class="font-display text-lg font-semibold tracking-tight">
             Attendance <span class="text-accent2">App</span>
@@ -73,13 +75,14 @@
 
       <!-- Desktop nav -->
       <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
-        <a href="#features" class="hover:text-accent">Características</a>
-        <a href="#workflow" class="hover:text-accent">Cómo funciona</a>
-        <a href="#demo" class="hover:text-accent">Demo</a>
-        <a href="#contacto" class="hover:text-accent">Contacto</a>
+        <a href="#features" class="hover:text-accent transition">Características</a>
+        <a href="#workflow" class="hover:text-accent transition">Cómo funciona</a>
+        <a href="#demo" class="hover:text-accent transition">Demo</a>
+        <a href="#contacto" class="hover:text-accent transition">Contacto</a>
       </nav>
 
       <div class="flex items-center gap-3">
+        <!-- Modo oscuro -->
         <button id="themeToggle"
           class="hidden md:inline-flex p-2 rounded-full border border-slate-200 bg-white/70
                  dark:border-slate-700 dark:bg-black/60">
@@ -93,6 +96,7 @@
           Ingresar a la app
         </a>
 
+        <!-- Mobile menu -->
         <button id="menuToggle"
           class="md:hidden inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/80 p-2
                  dark:border-slate-700 dark:bg-black/70 dark:text-slate-100">
@@ -125,8 +129,8 @@
           Ingresar
         </a>
       </div>
-    </nav>
 
+    </nav>
   </header>
 
   <!-- ==================== CONTENIDO ==================== -->
@@ -137,15 +141,56 @@
 
       <!-- Texto -->
       <div class="flex-1 hero-text">
-        <!-- ... (igual a tu código actual) ... -->
+        <p class="mb-3 inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-medium
+                  text-slate-600 shadow-sm ring-1 ring-slate-200
+                  dark:bg-black/40 dark:text-slate-300 dark:ring-slate-700">
+          <span class="flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-[10px] text-white
+                       dark:bg-white dark:text-slate-900">●</span>
+          Nueva versión 2025 • Optimizada para academias y dojos
+        </p>
+
+        <h1 class="font-display text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+          Gestioná asistencias
+          <span class="block bg-gradient-to-r from-slate-900 via-accent2 to-accent bg-clip-text text-transparent
+                       dark:from-white dark:via-accent2 dark:to-accent">
+            con la misma simpleza que pasás lista.
+          </span>
+        </h1>
+
+        <p class="mt-5 max-w-xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+          Attendance App centraliza tus cursos, clases, alumnos y reportes en un solo lugar.
+          Diseñada para academias, dojos, gimnasios y escuelas.
+        </p>
+
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <a href="https://attendance-frontend-v2-production.up.railway.app/login"
+            class="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold
+                   text-white shadow-soft hover:-translate-y-0.5 hover:bg-slate-800
+                   dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
+            <i data-lucide="log-in" class="h-4 w-4"></i>
+            Probar ahora
+          </a>
+
+          <a href="#demo"
+            class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900
+                   dark:text-slate-300 dark:hover:text-white">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full border border-slate-300
+                           bg-white text-[11px] shadow-sm
+                           dark:border-slate-700 dark:bg-black/60">
+              ▶
+            </span>
+            Ver pantallas de ejemplo
+          </a>
+        </div>
       </div>
 
-      <!-- Mockup sin overflow -->
+
+      <!-- Mockup responsivo sin scroll -->
       <div class="flex-1 flex justify-center" data-aos="fade-left">
+
         <div class="relative max-w-[320px] w-full rounded-[24px] p-4
                     bg-[#0d0c13] shadow-[0_0_50px_10px_rgba(142,63,255,0.25)]
-                    border border-white/10 dark:border-white/10
-                    overflow-hidden">
+                    border border-white/10 dark:border-white/10 overflow-hidden">
 
           <div class="absolute inset-0 rounded-[24px] -z-10 blur-2xl
                       bg-gradient-to-br from-accent2/20 to-accent/10"></div>
@@ -154,9 +199,78 @@
             src="./src/img/img1.png"
             alt="Vista previa de Attendance App"
             class="w-full h-auto max-h-[70vh] object-contain mx-auto rounded-2xl" />
+
         </div>
+
       </div>
 
     </section>
 
-    <!-- RESTO DEL CONTENIDO IGUAL -->
+
+    <!-- ==================== RESTO DEL CONTENIDO ============= -->
+    <!-- (Tu FEATURES, WORKFLOW, DEMO, FAQ y FOOTER completos aquí sin cambios) -->
+
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer id="contacto"
+      class="border-t border-slate-200/70 bg-white/80 py-6 text-center text-xs text-slate-500
+             dark:border-slate-800 dark:bg-black/40 dark:text-slate-400">
+
+      <p>© 2025 Attendance App — by MarceDev</p>
+
+      <p class="mt-1">
+        Instagram:
+        <span class="font-medium text-slate-700 dark:text-slate-200">@marcelocolum</span>
+        —
+        WhatsApp:
+        <span class="font-medium text-slate-700 dark:text-slate-200">3743 568193</span>
+      </p>
+
+      <a href="https://wa.me/5493743568193?text=Hola%20Marce,%20quiero%20consultar"
+         target="_blank"
+         class="flex items-center gap-2 justify-center mt-2 hover:opacity-80 transition mx-auto w-fit">
+
+        <img src="./src/img/whatsapp.png" class="w-6 h-6 object-contain" />
+        <span class="text-sm text-gray-300">WhatsApp</span>
+      </a>
+
+    </footer>
+
+  </main>
+
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <script>
+    AOS.init({ once: true, duration: 600, easing: 'ease-out-quint' });
+    lucide.createIcons();
+
+    // Tema oscuro
+    const html = document.documentElement;
+    const storedTheme = localStorage.getItem('attendance-theme');
+    if (storedTheme === 'dark') html.classList.add('dark');
+
+    function toggleTheme() {
+      html.classList.toggle('dark');
+      localStorage.setItem('attendance-theme', html.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+    document.getElementById('themeToggleMobile')?.addEventListener('click', toggleTheme);
+
+    // Menu mobile
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
+    menuToggle?.addEventListener('click', () => {
+      mobileNav.classList.toggle('hidden');
+    });
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => mobileNav.classList.add('hidden'));
+    });
+  </script>
+
+</body>
+</html>
