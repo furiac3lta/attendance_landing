@@ -25,3 +25,16 @@ img:hover {
     text-align: center;
   }
 }
+/* Evitar scroll lateral */
+html, body {
+  overflow-x: hidden !important;
+}
+
+/* Scroll thin para el chat */
+#chatbotMessages::-webkit-scrollbar {
+  width: 6px;
+}
+#chatbotMessages::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.3);
+  border-radius: 10px;
+}

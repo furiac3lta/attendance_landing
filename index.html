@@ -382,6 +382,50 @@
 
       </div>
     </section>
+<!-- BOTÓN FLOTANTE -->
+<button id="chatbotToggle"
+  class="fixed bottom-6 right-6 z-40 bg-gradient-to-br from-accent to-accent2
+         text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center
+         hover:scale-105 transition-all">
+  💬
+</button>
+
+<!-- PANEL DEL CHATBOT -->
+<div id="chatbotPanel"
+  class="fixed bottom-6 right-6 w-80 h-[420px] bg-white dark:bg-[#0b0b12]
+         rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10
+         flex flex-col overflow-hidden translate-y-6 opacity-0 pointer-events-none
+         transition-all duration-300 z-50">
+
+  <!-- HEADER -->
+  <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-black/20">
+    <div>
+      <p class="font-semibold text-slate-800 dark:text-white">Franklin</p>
+      <p class="text-xs text-slate-500 dark:text-slate-400">Turnos • Consultas</p>
+    </div>
+    <button id="chatbotClose" class="text-slate-500 hover:text-slate-700 dark:hover:text-white">✕</button>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div id="chatbotMessages" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm scrollbar-thin">
+    <div class="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 p-3 rounded-xl w-fit max-w-[85%] shadow">
+      ¡Hola! 👋 Soy  Franklin. ¿En qué te puedo ayudar?
+    </div>
+  </div>
+
+  <!-- INPUT -->
+  <form id="chatbotForm" class="border-t border-slate-200 dark:border-slate-800 p-3 flex gap-2 bg-slate-50 dark:bg-black/30">
+    <input id="chatbotInput"
+      type="text"
+      placeholder="Escribe tu mensaje..."
+      class="flex-1 px-3 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 dark:bg-black/40 dark:text-white focus:ring-2 focus:ring-accent outline-none" />
+
+    <button type="submit"
+      class="bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2 rounded-xl shadow hover:opacity-80">
+      ➤
+    </button>
+  </form>
+</div>
 
   </main>
 
@@ -399,30 +443,112 @@
 
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init();
-    lucide.createIcons();
+<script>
+AOS.init();
+lucide.createIcons();
 
-    const html = document.documentElement;
-    const storedTheme = localStorage.getItem("attendance-theme");
+const html = document.documentElement;
+const storedTheme = localStorage.getItem("attendance-theme");
+if (storedTheme === "dark") html.classList.add("dark");
 
-    if (storedTheme === "dark") html.classList.add("dark");
+function toggleTheme() {
+  html.classList.toggle("dark");
+  localStorage.setItem("attendance-theme", html.classList.contains("dark") ? "dark" : "light");
+}
 
-    function toggleTheme() {
-      html.classList.toggle("dark");
-      localStorage.setItem("attendance-theme", html.classList.contains("dark") ? "dark" : "light");
-    }
+document.getElementById("themeToggle")?.addEventListener("click", toggleTheme);
+document.getElementById("themeToggleMobile")?.addEventListener("click", toggleTheme);
 
-    document.getElementById("themeToggle")?.addEventListener("click", toggleTheme);
-    document.getElementById("themeToggleMobile")?.addEventListener("click", toggleTheme);
+const menuToggle = document.getElementById("menuToggle");
+const mobileNav = document.getElementById("mobileNav");
+menuToggle.addEventListener("click", () => {
+  mobileNav.classList.toggle("hidden");
+});
 
-    const menuToggle = document.getElementById("menuToggle");
-    const mobileNav = document.getElementById("mobileNav");
+// ============================
+//       CHATBOT CONFIG
+// ============================
 
-    menuToggle.addEventListener("click", () => {
-      mobileNav.classList.toggle("hidden");
-    });
-  </script>
+const toggle = document.getElementById("chatbotToggle");
+const panel = document.getElementById("chatbotPanel");
+const closeBtn = document.getElementById("chatbotClose");
+
+const form = document.getElementById("chatbotForm");
+const input = document.getElementById("chatbotInput");
+const messages = document.getElementById("chatbotMessages");
+
+// Crear SessionId persistente
+let sessionId = localStorage.getItem("chatbot-session-id");
+if (!sessionId) {
+  sessionId = crypto.randomUUID();
+  localStorage.setItem("chatbot-session-id", sessionId);
+}
+
+function openChat() {
+  panel.classList.remove("opacity-0", "translate-y-6", "pointer-events-none");
+}
+function closeChat() {
+  panel.classList.add("opacity-0", "translate-y-6", "pointer-events-none");
+}
+
+toggle.onclick = openChat;
+closeBtn.onclick = closeChat;
+
+// ========== ENVÍO DE MENSAJES ==========
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+
+  // Mostrar mensaje del usuario
+  const bubble = document.createElement("div");
+  bubble.className = "bg-accent text-white p-3 rounded-xl w-fit ml-auto max-w-[85%] shadow";
+  bubble.innerText = text;
+  messages.appendChild(bubble);
+  messages.scrollTop = messages.scrollHeight;
+  input.value = "";
+
+  try {
+    // 🚀 Formato que N8N necesita
+    const payload = {
+      action: "sendMessage",
+      sessionId: sessionId,
+      chatInput: text
+    };
+
+    const res = await fetch(
+      "https://irmaosclubpr.app.n8n.cloud/webhook/304cfb9e-624b-45c7-8bc3-e554db848685/chat",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    const data = await res.json();
+
+    // 🚀 MUY IMPORTANTE:
+    // La respuesta del chatbot está en: data.output
+    const botReply = data.output || "No entendí eso.";
+
+    // Mostrar respuesta del bot
+    const botBubble = document.createElement("div");
+    botBubble.className = "bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 p-3 rounded-xl w-fit max-w-[85%] shadow";
+    botBubble.innerText = botReply;
+
+    messages.appendChild(botBubble);
+    messages.scrollTop = messages.scrollHeight;
+
+  } catch (error) {
+    console.error("Error:", error);
+    const errorBubble = document.createElement("div");
+    errorBubble.className = "bg-red-100 text-red-700 p-3 rounded-xl w-fit max-w-[85%]";
+    errorBubble.innerText = "Error de conexión.";
+    messages.appendChild(errorBubble);
+  }
+});
+</script>
 
 </body>
 
